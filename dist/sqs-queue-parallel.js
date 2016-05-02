@@ -1,14 +1,14 @@
 /**
- * sqs-queue-parallel 0.1.7 <https://github.com/bigluck/sqs-queue-parallel>
+ * @pushspring/sqs-queue-parallel 0.1.7 <https://github.com/bigluck/sqs-queue-parallel>
  * Create a poll of Amazon SQS queue watchers and each one can receive 1+ messages
  *
  * Available under MIT license <https://github.com/bigluck/sqs-queue-parallel/raw/master/LICENSE>
  */
 (function() {
-  var AWS, SqsQueueParallel, async, events, globalConfig, _,
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __slice = [].slice;
+  var AWS, SqsQueueParallel, _, async, events, globalConfig,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
+    slice = [].slice;
 
   AWS = require('aws-sdk');
 
@@ -20,8 +20,8 @@
 
   globalConfig = {};
 
-  module.exports = SqsQueueParallel = (function(_super) {
-    __extends(SqsQueueParallel, _super);
+  module.exports = SqsQueueParallel = (function(superClass) {
+    extend(SqsQueueParallel, superClass);
 
     SqsQueueParallel.configure = function(config) {
       if (config == null) {
@@ -66,18 +66,18 @@
               WaitTimeSeconds: self.config.waitTimeSeconds
             }, self.config.visibilityTimeout != null ? options.VisibilityTimeout = self.config.visibilityTimeout : void 0, options), next);
           }, function(queue, next) {
-            var _ref;
-            if (!((_ref = queue.Messages) != null ? _ref[0] : void 0)) {
+            var ref;
+            if (!((ref = queue.Messages) != null ? ref[0] : void 0)) {
               return next(null);
             }
             if (self.config.debug) {
               console.log("SqsQueueParallel " + self.config.name + "[" + index + "]: " + queue.Messages.length + " new messages");
             }
             return async.eachSeries(queue.Messages, function(message, next) {
-              var data;
+              var data, error;
               try {
                 data = JSON.parse(message.Body);
-              } catch (_error) {
+              } catch (error) {
                 data = message.Body;
               }
               return self.emit("message", {
@@ -104,7 +104,7 @@
           }
         ], function(err) {
           if (err) {
-            self.emit.apply(self, ["error"].concat(__slice.call(arguments)));
+            self.emit.apply(self, ["error"].concat(slice.call(arguments)));
           }
           return process.nextTick(function() {
             return readQueue(index);
@@ -167,12 +167,12 @@
             QueueNamePrefix: self.config.name
           }, next);
         }, function(data, next) {
-          var re, url, _i, _len, _ref;
+          var i, len, re, ref, url;
           re = new RegExp("/[\\d]+/" + self.config.name + "$");
           self.emit('connection', data.QueueUrls);
-          _ref = data.QueueUrls;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            url = _ref[_i];
+          ref = data.QueueUrls;
+          for (i = 0, len = ref.length; i < len; i++) {
+            url = ref[i];
             if (re.test(url)) {
               self.emit('connect', self.url = url);
             }

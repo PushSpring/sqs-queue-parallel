@@ -41,10 +41,10 @@
 		"lodash": "^2.4.1"
 	},
 	"devDependencies": {
-		"grunt": "^0.4.4",
+		"grunt": "v1.0.0",
 		"coffee-script": "^1.7.1",
 		"nodemon": "^1.0.15",
-		"grunt-contrib-coffee": "^0.10.1",
-		"grunt-banner": "^0.2.2"
+		"grunt-contrib-coffee": "^1.0.0",
+		"grunt-banner": "^0.6.0"
 	}
 }
